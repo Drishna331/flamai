@@ -80,6 +80,16 @@ The `audit_checks.py` experiment isolated the repeated-space word-count bug and 
 
 Revision: the Part A memo recommends that production routing decisions use tokens per comparable request/task rather than whitespace-word fertility.
 
+Follow-up audit hardening:
+
+```bash
+python3 partA/audit_checks.py
+```
+
+Result: expanded the evidence checks so A2 now separates four claims: repeated-space word parsing, per-line average instability, denominator mismatch, and starter-sample insufficiency. I also explicitly documented two suspicious-but-harmless items: NFC normalization and the unused random seed.
+
+Revision: updated `partA/memo.md` so each claimed flaw has an isolated command, a before/after number, and the direction of distortion.
+
 ---
 
 ## 2026-09-04 - Part B capacity reconciliation
@@ -107,3 +117,13 @@ Hypothesis: SFT is the best 3-week plan because it avoids introducing a second i
 Result: completed the decision memo recommending a small synthetic-pair SFT pass, with prompt engineering as the baseline/fallback.
 
 The plan includes a week-1 kill criterion, numeric success thresholds, and reviewer-throughput arithmetic.
+
+---
+
+## 2026-09-05 - Reproducibility pass
+
+Hypothesis: graders should be able to see the submission shape and rerun path immediately from the repository root.
+
+Action: replaced the placeholder README with a concise runbook, repository map, and headline conclusions.
+
+Result: the root now points to every required deliverable and lists the exact commands used to regenerate the main outputs.

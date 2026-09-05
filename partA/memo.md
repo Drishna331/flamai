@@ -24,13 +24,15 @@ Claimed flaw 1: `line.split(" ")` miscounts words when there are repeated spaces
 python partA/audit_checks.py
 ```
 
-On `alpha  beta   gamma`, the old count is 6 words while the fixed count is 3. With the deterministic byte tokenizer, the buggy old code reports 3.167 tokens/word while the fixed code reports 6.333 tokens/word. Direction: extra spaces make fertility look artificially better.
+On `alpha  beta   gamma`, the old count is 6 words while the fixed count is 3. With the deterministic byte-token proxy, the buggy old code reports 3.167 tokens/word while the fixed code reports 6.333 tokens/word. Direction: empty fields from repeated spaces inflate the denominator, so fertility looks artificially better. On FLORES Hindi this is a small effect because the corpus is clean (`old_total_words=25649`, `fixed_total_words=25643`), but it is still a real parser bug for messier production text.
 
-Claimed flaw 2: per-whitespace-word fertility is a weak cross-language serving denominator. With the byte tokenizer on FLORES devtest, Hindi is 2.18x English by tokens/word but 2.55x by tokens/parallel sentence and 3.92x by tokens/grapheme. The denominator changes the conclusion, because "word" is not held constant across scripts and languages.
+Claimed flaw 2: the script averages per-line ratios instead of reporting the corpus-level micro-average. A synthetic two-line check with one 101-word line and one long one-word line gives 14.995 tokens/word by line average but 2.245 by micro-average. Direction: short outlier lines get the same weight as long lines, so the metric is unstable as a corpus cost estimator. On clean FLORES the English difference is modest (6.062 old line-average byte tokens/word vs 6.032 fixed micro byte tokens/word), but the isolated test shows why the estimator itself is fragile.
 
-Claimed flaw 3: the original sample corpus is too small. It used about 10 toy sentences; this run uses 1012 parallel sentences per language. The direction of the old Hindi-only conclusion is not enough for routing, because adding Kannada/Tamil/Telugu/Malayalam shows the largest ratios are not Hindi.
+Claimed flaw 3: per-whitespace-word fertility is the wrong routing denominator. With the byte-token proxy on FLORES devtest, Hindi is 2.18x English by tokens/word, 2.55x by tokens/parallel sentence, and 2.57x by Unicode character. The denominator changes the conclusion, because "word" and "character" do not hold the user task constant across languages. Serving cost is paid on prompt plus generated tokens per request, so the production analogue should be tokens per comparable request/task.
 
-Suspicious but mostly harmless: NFC normalization is fine and should stay. In the audit check, NFC plus lowercasing changed English byte count by only 1 byte over 1012 sentences and Hindi by 0 bytes. Lowercasing is unnecessary for serving-cost measurement, but it is not the main distortion here.
+Claimed flaw 4: the original sample corpus is too small and too narrow. It used a toy English/Hindi sample; this run uses 1012 parallel sentences per language. The toy sample is acceptable for a smoke test, but not for the report's claim that no further measurement is needed. Adding Kannada/Tamil/Telugu/Malayalam also shows that the largest ratios are not Hindi.
+
+Suspicious but mostly harmless: NFC normalization is fine and should stay. Lowercasing is unnecessary for serving-cost measurement, but in the audit check it changed English byte count by only 1 byte over 1012 sentences and Hindi by 0 bytes, so it is not the main distortion here. `random.seed(1337)` also looks suspicious in a benchmark script, but it is harmless because the script never calls a random API.
 
 ## A3. Corrected Analysis
 
