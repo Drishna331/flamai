@@ -1,0 +1,17 @@
+tokenizer,lang,sentence_token_ratio_vs_eng,word_ratio_vs_eng,grapheme_ratio_vs_eng,utf8_byte_ratio_vs_eng
+spm:models/english_byte_unigram_2k.model,eng,1.000000,1.000000,1.000000,1.000000
+spm:models/english_byte_unigram_2k.model,hin,8.142012,6.953876,12.500081,3.187325
+spm:models/english_byte_unigram_2k.model,kan,9.028962,12.282196,13.184726,3.177620
+spm:models/english_byte_unigram_2k.model,tam,10.173026,13.281639,13.462103,3.187156
+spm:models/english_byte_unigram_2k.model,tel,8.498347,10.988448,14.647221,3.174222
+spm:models/english_byte_unigram_2k.model,mal,9.922260,14.555088,16.485395,3.183292
+spm:models/english_byte_unigram_2k.model,ben,8.420920,9.454866,13.603076,3.189786
+spm:models/english_byte_unigram_2k.model,mar,8.583182,9.869806,14.107827,3.189225
+spm:models/flores_unigram_8k.model,eng,1.000000,1.000000,1.000000,1.000000
+spm:models/flores_unigram_8k.model,hin,0.967222,0.826079,1.484933,0.378636
+spm:models/flores_unigram_8k.model,kan,1.008764,1.372232,1.473065,0.355021
+spm:models/flores_unigram_8k.model,tam,0.987495,1.289247,1.306763,0.309378
+spm:models/flores_unigram_8k.model,tel,0.998434,1.290985,1.720838,0.372925
+spm:models/flores_unigram_8k.model,mal,1.081253,1.586102,1.796451,0.346890
+spm:models/flores_unigram_8k.model,ben,0.964721,1.083173,1.558400,0.365429
+spm:models/flores_unigram_8k.model,mar,0.949858,1.092241,1.561239,0.352936
